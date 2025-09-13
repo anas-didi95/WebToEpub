@@ -75,7 +75,7 @@ class AppYoruWorldParser extends Parser {
 
     buildChapter(rawHTML, url) {
         let newDoc = Parser.makeEmptyDocForContent(url);
-        newDoc.content.appendChild(rawHTML.body);
+        util.moveChildElements(rawHTML.body, newDoc.content);
         return newDoc.dom;
     }
 
