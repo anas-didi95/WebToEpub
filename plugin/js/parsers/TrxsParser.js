@@ -1,5 +1,6 @@
 "use strict";
 
+parserFactory.registerDeadSite("trxs.me", () => new TrxsParser());
 parserFactory.register("trxs.cc", () => new TrxsParser());
 parserFactory.register("tongrenshe.cc", () => new TrxsParser());
 
@@ -39,7 +40,7 @@ class TrxsParser extends Parser {
     }
 
     async fetchChapter(url) {
-        let options = { makeTextDecoder: () => new TextDecoder("gb2312") };
+        let options = { makeTextDecoder: () => new TextDecoder("gbk") };
         return (await HttpClient.wrapFetch(url, options)).responseXML;
     }
 
