@@ -1,6 +1,7 @@
 "use strict";
 
 parserFactory.register("app.yoru.world", () => new AppYoruWorldParser());
+parserFactory.register("www.lumostories.com", () => new AppYoruWorldParser());
 
 class AppYoruWorldParser extends Parser {
     constructor() {
@@ -14,8 +15,10 @@ class AppYoruWorldParser extends Parser {
         let data = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
         let notInclude = data.paywall.first_n_chapters;
         let ChapterArray = data.chapters;
+        let url = new URL(dom.baseURI);
+        let hostname = url.hostname;
         let ChapterArrayFree = ChapterArray.map(a => ({
-            sourceUrl: "https://app.yoru.world/en/story/"+bookid+"/read/" + a.id, 
+            sourceUrl: `https://${hostname}/en/story/`+bookid+"/read/" + a.id, 
             title: a.title,
             isIncludeable: (a.number <= notInclude || notInclude == null)
         }));
