@@ -1,6 +1,7 @@
 "use strict";
 
 parserFactory.register("novelsonline.net", () => new NovelsOnlineParser());
+parserFactory.register("novelsonline.org", () => new NovelsOnlineParser());
 
 class NovelsOnlineParser extends Parser {
     constructor() {
