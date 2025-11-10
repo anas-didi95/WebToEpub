@@ -41,4 +41,17 @@ class NovelsOnlineParser extends Parser {
     getInformationEpubItemChildNodes(dom) {
         return [dom.querySelector(".novel-right .novel-detail-body")];
     }
+
+    extractAuthor(dom) {
+        const detailOptionEls = dom.querySelectorAll("div.novel-left > div.novel-details > div.novel-detail-item");
+        if (detailOptionEls) {
+            for (const el of detailOptionEls) {
+                if (el.textContent.includes("Author(s)")) {
+                    return el.textContent.replace("Author(s)", "").trim();
+                }
+            }
+        }
+
+        return "<unknown>";
+    }
 }
