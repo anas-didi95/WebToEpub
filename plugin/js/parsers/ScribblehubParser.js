@@ -62,13 +62,15 @@ class ScribblehubParser extends Parser {
     }
 
     extractDescription(dom) {
-        return this.extractDescriptionInternal(dom).innerText.trim();
+        return this.extractDescriptionInternal(dom)?.innerText?.trim();
     }
     // unwrap the description from the readmore that you may get on mobile
     extractDescriptionInternal(dom) {
         let desc = dom.querySelector(".wi_fic_desc");
-        desc.querySelectorAll(".dots, .morelink").forEach(e => e.remove());
-        desc.querySelectorAll(".testhide").forEach(e => e.replaceWith(...e.childNodes));
+        if (desc != null) {
+            desc.querySelectorAll(".dots, .morelink").forEach(e => e.remove());
+            desc.querySelectorAll(".testhide").forEach(e => e.replaceWith(...e.childNodes));
+        }
 
         return desc;
     }
@@ -88,7 +90,7 @@ class ScribblehubParser extends Parser {
 
         // spoilers
         for (let element of content.querySelectorAll(".sp-wrap")) {
-            element.querySelector(".sp-body>.spdiv").remove();
+            element.querySelector(".sp-body>.spdiv")?.remove();
 
             let details = webPageDom.createElement("details");
             let summary = webPageDom.createElement("summary");
@@ -123,7 +125,10 @@ class ScribblehubParser extends Parser {
         let info = [];
 
         info.push(dom.createElement("div").innerHTML = "<p><b>Synopsis</b></p>");
-        info.push(...this.extractDescriptionInternal(dom).childNodes);
+        let synopsis = this.extractDescriptionInternal(dom);
+        if (synopsis) {
+            info.push(...synopsis.childNodes);
+        }
 
         let genre = dom.querySelectorAll(".wi_fic_genre a.fic_genre");
         if (genre.length > 0) {

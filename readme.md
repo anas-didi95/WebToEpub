@@ -807,6 +807,10 @@ Don't forget to give the project a star! Thanks again!
     <li>MD Shabrez</li>
     <li>jurassicplayer</li>
     <li>X2E4VXpZKv</li>
+    <li>meson1271 (Parser for jadescrolls.com)</li>
+    <li>AgatZan (Parser for ficbook.net)</li>
+    <li>Joel Sunil</li>
+    <li>nothing0074</li>
   </ul>
 </details>
 
