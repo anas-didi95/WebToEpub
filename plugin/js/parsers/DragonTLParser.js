@@ -10,7 +10,17 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
     // returns promise with the URLs of the chapters to fetch
     // promise is used because may need to fetch the list of URLs from internet
     async getChapterUrls(dom) {
-        return util.hyperlinksToChapterList(dom.querySelector(".mbs_toc_list"));
+        const tocList = dom.querySelectorAll(".mbs_toc_list");
+
+        if (tocList.length === 0) {
+            return [];
+        } else if (tocList === 1) {
+            return util.hyperlinksToChapterList(tocList[0]);
+        }
+        
+        return [...tocList]
+            .map(toc => util.hyperlinksToChapterList(toc, false, () => toc.previousSibling.textContent))
+            .reduce((prev, curr) => [...prev, ...curr], []);
     }
 
     // returns the element holding the story content in a chapter
