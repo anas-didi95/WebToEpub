@@ -14,7 +14,7 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
 
         if (tocList.length === 0) {
             return [];
-        } else if (tocList === 1) {
+        } else if (tocList.length === 1) {
             return util.hyperlinksToChapterList(tocList[0]);
         }
         
@@ -182,11 +182,10 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
-    /*
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll("div.novel-details")];
+        const nodeList = dom.querySelector(".mbs_story_summary")?.childNodes ?? [];
+        return [...nodeList];
     }
-    */
 
     // Optional, Any cleanup operations to perform on the nodes
     // returned by getInformationEpubItemChildNodes
