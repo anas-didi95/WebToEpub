@@ -12,7 +12,7 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
 
     // returns promise with the URLs of the chapters to fetch
     // promise is used because may need to fetch the list of URLs from internet
-    async getChapterUrls(dom, chapterUrlsUI) {
+    async getChapterUrls(dom) {
         const menu = dom.querySelector("table.posts-table") ;
         return util.hyperlinksToChapterList(menu);
     }
