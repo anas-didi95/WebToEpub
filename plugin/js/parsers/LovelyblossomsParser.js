@@ -1,8 +1,8 @@
 "use strict";
 
-parserFactory.register("lovelyblossoms.com", () => new LovelyBlossomsParser());
+parserFactory.register("lovelyblossoms.com", () => new LovelyblossomsParser());
 
-class LovelyBlossomsParser extends Parser { // eslint-disable-line no-unused-vars
+class LovelyblossomsParser extends Parser { // eslint-disable-line no-unused-vars
     constructor() {
         super();
     }
