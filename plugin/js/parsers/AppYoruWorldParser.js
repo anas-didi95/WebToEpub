@@ -86,7 +86,7 @@ class AppYoruWorldParser extends Parser {
     }
 
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll("#about-panel.synopsis")];
+        return [dom.querySelector(".relative > .text-sm")];
     }
 
     addTitleToContent(webPage, content) {
