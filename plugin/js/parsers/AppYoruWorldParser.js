@@ -4,6 +4,8 @@ parserFactory.register("app.yoru.world", () => new AppYoruWorldParser());
 parserFactory.register("lumostories.com", () => new AppYoruWorldParser());
 
 class AppYoruWorldParser extends Parser {
+    apiBaseUrl = "api.lumostories.com"; // old pxp-main-531j.onrender.com
+
     constructor() {
         super();
     }
@@ -12,7 +14,7 @@ class AppYoruWorldParser extends Parser {
         // eslint-disable-next-line
         let regex = new RegExp("\/story\/[0-9]+");
         let bookid = dom.baseURI.match(regex)?.[0].slice(7);
-        let data = (await HttpClient.fetchJson("https://1pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
+        let data = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/books/` + bookid)).json;
         let notInclude = data.paywall.first_n_chapters;
         let ChapterArray = data.chapters;
         let url = new URL(dom.baseURI);
@@ -29,12 +31,12 @@ class AppYoruWorldParser extends Parser {
         // eslint-disable-next-line
         let regex = new RegExp("\/story\/[0-9]+");
         let bookid = dom.baseURI.match(regex)?.[0].slice(7);
-        let bookinfo = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
+        let bookinfo = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/books/` + bookid)).json;
         this.title = bookinfo.title;
         this.author = bookinfo.author.display_name;
         this.tags = bookinfo.tags.map(a => a.name);
         this.description = bookinfo.summary;
-        this.img = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/aws/s3/"+bookinfo.cover.id+":sign_get")).json;
+        this.img = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/aws/s3/`+bookinfo.cover.id+":sign_get")).json;
         return;
     }
 
@@ -73,7 +75,7 @@ class AppYoruWorldParser extends Parser {
     toRestUrl(url) {
         let regex = new RegExp("[0-9]+$");
         let id = url.match(regex)[0];
-        return "https://pxp-main-531j.onrender.com/api/v1/book_chapters/"+id+"/content";
+        return `https://${this.apiBaseUrl}/api/v1/book_chapters/`+id+"/content";
     }
 
     buildChapter(rawHTML, url) {
