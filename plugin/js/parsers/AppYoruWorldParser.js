@@ -1,6 +1,7 @@
 "use strict";
 
 parserFactory.register("app.yoru.world", () => new AppYoruWorldParser());
+parserFactory.register("lumostories.com", () => new AppYoruWorldParser());
 
 class AppYoruWorldParser extends Parser {
     constructor() {
@@ -11,11 +12,13 @@ class AppYoruWorldParser extends Parser {
         // eslint-disable-next-line
         let regex = new RegExp("\/story\/[0-9]+");
         let bookid = dom.baseURI.match(regex)?.[0].slice(7);
-        let data = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
+        let data = (await HttpClient.fetchJson("https://1pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
         let notInclude = data.paywall.first_n_chapters;
         let ChapterArray = data.chapters;
+        let url = new URL(dom.baseURI);
+        let hostname = url.hostname;
         let ChapterArrayFree = ChapterArray.map(a => ({
-            sourceUrl: "https://app.yoru.world/en/story/"+bookid+"/read/" + a.id, 
+            sourceUrl: `https://${hostname}/en/story/`+bookid+"/read/" + a.id, 
             title: a.title,
             isIncludeable: (a.number <= notInclude || notInclude == null)
         }));
@@ -75,7 +78,7 @@ class AppYoruWorldParser extends Parser {
 
     buildChapter(rawHTML, url) {
         let newDoc = Parser.makeEmptyDocForContent(url);
-        newDoc.content.appendChild(rawHTML.body);
+        util.moveChildElements(rawHTML.body, newDoc.content);
         return newDoc.dom;
     }
 
