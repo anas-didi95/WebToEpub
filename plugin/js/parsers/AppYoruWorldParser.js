@@ -19,13 +19,24 @@ class AppYoruWorldParser extends Parser {
         let ChapterArray = data.chapters;
         let url = new URL(dom.baseURI);
         let hostname = url.hostname;
-        let ChapterArrayFree = ChapterArray.map(a => ({
+
+        let currentArc = null;
+        let newArcValueForChapter = function(arc) {
+            if (typeof(arc) === "number") {
+                if (currentArc === arc) return null;
+                if (currentArc !== arc) currentArc = arc;
+                return `Season ${currentArc}`;
+            }
+            return null;
+        };
+
+        let ChapterArrayFree = ChapterArray.reverse().map(a => ({
             sourceUrl: `https://${hostname}/en/story/`+bookid+"/read/" + a.id, 
             title: a.title,
             isIncludeable: (a.number <= notInclude || notInclude == null),
-            newArc: (typeof(a.part) === "number" ? `Season ${a.part}` : null)
+            newArc: newArcValueForChapter(a.part)
         }));
-        return ChapterArrayFree.reverse();
+        return ChapterArrayFree;
     }
     
     async loadEpubMetaInfo(dom) {
