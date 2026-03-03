@@ -1,9 +1,11 @@
 "use strict";
 
 parserFactory.register("app.yoru.world", () => new AppYoruWorldParser());
-parserFactory.register("www.lumostories.com", () => new AppYoruWorldParser());
+parserFactory.register("lumostories.com", () => new AppYoruWorldParser());
 
 class AppYoruWorldParser extends Parser {
+    apiBaseUrl = "api.lumostories.com"; // old pxp-main-531j.onrender.com
+
     constructor() {
         super();
     }
@@ -12,29 +14,41 @@ class AppYoruWorldParser extends Parser {
         // eslint-disable-next-line
         let regex = new RegExp("\/story\/[0-9]+");
         let bookid = dom.baseURI.match(regex)?.[0].slice(7);
-        let data = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
+        let data = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/books/` + bookid)).json;
         let notInclude = data.paywall.first_n_chapters;
         let ChapterArray = data.chapters;
         let url = new URL(dom.baseURI);
         let hostname = url.hostname;
-        let ChapterArrayFree = ChapterArray.map(a => ({
+
+        let currentArc = null;
+        let newArcValueForChapter = function(arc) {
+            if (typeof(arc) === "number") {
+                if (currentArc === arc) return null;
+                if (currentArc !== arc) currentArc = arc;
+                return `Season ${currentArc}`;
+            }
+            return null;
+        };
+
+        let ChapterArrayFree = ChapterArray.reverse().map(a => ({
             sourceUrl: `https://${hostname}/en/story/`+bookid+"/read/" + a.id, 
             title: a.title,
-            isIncludeable: (a.number <= notInclude || notInclude == null)
+            isIncludeable: (a.number <= notInclude || notInclude == null),
+            newArc: newArcValueForChapter(a.part)
         }));
-        return ChapterArrayFree.reverse();
+        return ChapterArrayFree;
     }
     
     async loadEpubMetaInfo(dom) {
         // eslint-disable-next-line
         let regex = new RegExp("\/story\/[0-9]+");
         let bookid = dom.baseURI.match(regex)?.[0].slice(7);
-        let bookinfo = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/books/" + bookid)).json;
+        let bookinfo = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/books/` + bookid)).json;
         this.title = bookinfo.title;
         this.author = bookinfo.author.display_name;
         this.tags = bookinfo.tags.map(a => a.name);
         this.description = bookinfo.summary;
-        this.img = (await HttpClient.fetchJson("https://pxp-main-531j.onrender.com/api/v1/aws/s3/"+bookinfo.cover.id+":sign_get")).json;
+        this.img = (await HttpClient.fetchJson(`https://${this.apiBaseUrl}/api/v1/aws/s3/`+bookinfo.cover.id+":sign_get")).json;
         return;
     }
 
@@ -73,7 +87,7 @@ class AppYoruWorldParser extends Parser {
     toRestUrl(url) {
         let regex = new RegExp("[0-9]+$");
         let id = url.match(regex)[0];
-        return "https://pxp-main-531j.onrender.com/api/v1/book_chapters/"+id+"/content";
+        return `https://${this.apiBaseUrl}/api/v1/book_chapters/`+id+"/content";
     }
 
     buildChapter(rawHTML, url) {
@@ -83,7 +97,7 @@ class AppYoruWorldParser extends Parser {
     }
 
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll("#about-panel.synopsis")];
+        return [dom.querySelector(".relative > .text-sm")];
     }
 
     addTitleToContent(webPage, content) {
