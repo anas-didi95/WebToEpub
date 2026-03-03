@@ -22,7 +22,8 @@ class AppYoruWorldParser extends Parser {
         let ChapterArrayFree = ChapterArray.map(a => ({
             sourceUrl: `https://${hostname}/en/story/`+bookid+"/read/" + a.id, 
             title: a.title,
-            isIncludeable: (a.number <= notInclude || notInclude == null)
+            isIncludeable: (a.number <= notInclude || notInclude == null),
+            newArc: (typeof(a.part) === "number" ? `Season ${a.part}` : null)
         }));
         return ChapterArrayFree.reverse();
     }
