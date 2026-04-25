@@ -282,12 +282,12 @@ class Parser {
         // try jetpack tag
         let locale = dom.querySelector("meta[property='og:locale']");
         if (locale !== null) {
-            return locale.getAttribute("content");
+            return locale.getAttribute("content").substring(0, 2);
         }
 
         // try <html>'s lang attribute
-        locale = dom.querySelector("html").getAttribute("lang");
-        return (locale === null) ? "en" : locale;
+        locale = dom.querySelector("html").getAttribute("lang") ?? "en";
+        return locale.split("-")[0];
     }
 
     /**
