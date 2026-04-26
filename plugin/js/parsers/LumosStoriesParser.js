@@ -1,10 +1,10 @@
 
 "use strict";
 
-parserFactory.register("lumostories.com", () => new LumosStoriesParser());
-parserFactory.register("api.lumostories.com", () => new LumosStoriesParser());
-parserFactory.register("yoru.world", () => new YoruworldParer());
-parserFactory.register("api.yoru.world", () => new YoruworldParer());
+//parserFactory.register("lumostories.com", () => new LumosStoriesParser());
+//parserFactory.register("api.lumostories.com", () => new LumosStoriesParser());
+//parserFactory.register("yoru.world", () => new YoruworldParer());
+//parserFactory.register("api.yoru.world", () => new YoruworldParer());
 
 /**
  * @typedef {"free"|"premium"|"preview"} Strategy
