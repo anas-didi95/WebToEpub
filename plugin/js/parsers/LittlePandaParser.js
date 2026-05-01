@@ -94,13 +94,9 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
     }
 
     // Optional, supply if individual chapter titles are not inside the content element
-    /*
     findChapterTitle(dom) {
-        // typical implementation is find node with the Title
-        // Return Title element, OR the title as a string
-        return dom.querySelector("h3.dashhead-title");
+        return dom.querySelector("h1.chapter__title");
     }
-    */
 
     // Optional, if "next/previous chapter" are nested inside other elements,
     // this says how to find the highest parent element to remove
