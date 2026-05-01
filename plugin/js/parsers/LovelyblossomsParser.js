@@ -166,11 +166,9 @@ class LovelyblossomsParser extends Parser { // eslint-disable-line no-unused-var
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
-    /*
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll("div.novel-details")];
+        return [...dom.querySelectorAll("div.post-content_item div.summary-content"), dom.querySelector("div.summary__content")];
     }
-    */
 
     // Optional, Any cleanup operations to perform on the nodes
     // returned by getInformationEpubItemChildNodes
