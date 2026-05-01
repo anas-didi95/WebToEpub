@@ -87,12 +87,10 @@ class LovelyblossomsParser extends Parser { // eslint-disable-line no-unused-var
     */
 
     // Optional, supply if need to do custom cleanup of content
-    /*
     removeUnwantedElementsFromContentElement(element) {
-        util.removeChildElementsMatchingSelector(element, "button");
+        util.removeChildElementsMatchingSelector(element, "div:last-child");
         super.removeUnwantedElementsFromContentElement(element);
     }
-    */
 
     // Optional, supply if individual chapter titles are not inside the content element
     /*
