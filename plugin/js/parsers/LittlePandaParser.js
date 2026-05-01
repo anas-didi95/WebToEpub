@@ -1,6 +1,3 @@
-/*
-  Template to use to create a new parser
-*/
 "use strict";
 
 parserFactory.register("littlepandatranslations.com", () => new LittlePandaParser());
@@ -8,24 +5,64 @@ parserFactory.register("littlepandatranslations.com", () => new LittlePandaParse
 class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
     constructor() {
         super();
+        //Optional Parameters:
+
+        /*
+        // Minimum delay (in ms) between page requests. Useful for 403 error prevention.
+        // If the sites this parser accesses throttles requests or uses cloudflare, it is recommended to set this.
+        this.minimumThrottle = 3000;
+        */
     }
 
     // returns promise with the URLs of the chapters to fetch
     // promise is used because may need to fetch the list of URLs from internet
-    async getChapterUrls(dom) {
-        const menu = dom.querySelector("ol.chapter-group__list") ;
+    /*
+    async getChapterUrls(dom, chapterUrlsUI) {
+        // Most common implementation is to find element holding the hyperlinks to 
+        // the web pages holding the chapters.  Then call util.hyperlinksToChapterList()
+        // to convert the links into a list of URLs the parser will collect.
+        let menu = dom.querySelector("div.su-tabs-panes");
         return util.hyperlinksToChapterList(menu);
+
+        // Almost as common, find links on page and convert.
+        return [...dom.querySelectorAll("li.wp-manga-chapter.free-chap a")]
+            .map(a => util.hyperLinkToChapter(a));
+
+        // Need to walk multiple ToC pages, page by page
+        return (await this.walkTocPages(dom, 
+            TemplateParser.chaptersFromDom, 
+            TemplateParser.nextTocPageUrl, 
+            chapterUrlsUI
+        ));
+
+        // Can get list of all ToC pages
+        let tocPage1chapters = TemplateParser.extractPartialChapterList(dom);
+        let urlsOfTocPages  = TemplateParser.getUrlsOfTocPages(dom);
+        return (await this.getChaptersFromAllTocPages(tocPage1chapters,
+            TemplateParser.extractPartialChapterList,
+            urlsOfTocPages,
+            chapterUrlsUI
+        ));
     }
+    */
 
     // returns the element holding the story content in a chapter
+    /*
     findContent(dom) {
-        return dom.querySelector(".entry-content");
+        // typical implementation is find node with all wanted content
+        // return is the element holding just the wanted content.
+        return dom.querySelector("article");
     }
+    */
 
     // title of the story  (not to be confused with title of each chapter)
+    /*
     extractTitleImpl(dom) {
-        return dom.querySelector(".entry-title");
+        // typical implementation is find node with the Title and return name from title
+        // NOTE. Can return Title as a string, or an  HTML element
+        return dom.querySelector("h1");
     }
+    */
 
     // author of the story
     // Optional, if not provided, will default to "<unknown>"
@@ -85,16 +122,21 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
     */
 
     // Optional, supply if need to do custom cleanup of content
+    /*
     removeUnwantedElementsFromContentElement(element) {
-        util.removeChildElementsMatchingSelector(element, "div:last-child");
-        util.removeChildElementsMatchingSelector(element, ".navigation-buttons");
+        util.removeChildElementsMatchingSelector(element, "button");
         super.removeUnwantedElementsFromContentElement(element);
     }
+    */
 
     // Optional, supply if individual chapter titles are not inside the content element
+    /*
     findChapterTitle(dom) {
-        return dom.querySelector(".entry-title");
+        // typical implementation is find node with the Title
+        // Return Title element, OR the title as a string
+        return dom.querySelector("h3.dashhead-title");
     }
+    */
 
     // Optional, if "next/previous chapter" are nested inside other elements,
     // this says how to find the highest parent element to remove
@@ -168,9 +210,11 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
+    /*
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll(".entry-content p")];
+        return [...dom.querySelectorAll("div.novel-details")];
     }
+    */
 
     // Optional, Any cleanup operations to perform on the nodes
     // returned by getInformationEpubItemChildNodes
