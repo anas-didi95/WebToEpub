@@ -86,12 +86,12 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
     */
 
     // Optional, supply if need to do custom cleanup of content
-    /*
     removeUnwantedElementsFromContentElement(element) {
-        util.removeChildElementsMatchingSelector(element, "button");
+        util.removeChildElementsMatchingSelector(element, "span.ts-honeypot");
+        util.removeChildElementsMatchingSelector(element, "div.navigation-buttons");
+        util.removeChildElementsMatchingSelector(element, "hr.wp-block-separator");
         super.removeUnwantedElementsFromContentElement(element);
     }
-    */
 
     // Optional, supply if individual chapter titles are not inside the content element
     /*
