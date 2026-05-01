@@ -11,17 +11,13 @@ class LovelyblossomsParser extends Parser { // eslint-disable-line no-unused-var
     // promise is used because may need to fetch the list of URLs from internet
     async getChapterUrls(dom) {
         return [...dom.querySelectorAll("li.wp-manga-chapter.free-chap a")]
-            .map(a => util.hyperLinkToChapter(a)).reverse();
+            .map(a => util.hyperLinkToChapter(a))
+            .reverse();
     }
 
     // returns the element holding the story content in a chapter
     findContent(dom) {
-        return dom.querySelector(".reading-content");
-    }
-
-    // title of the story  (not to be confused with title of each chapter)
-    extractTitleImpl(dom) {
-        return dom.querySelector(".post-title > h1");
+        return dom.querySelector("div.reading-content");
     }
 
     // Optional, supply if need to do custom cleanup of content
@@ -32,19 +28,19 @@ class LovelyblossomsParser extends Parser { // eslint-disable-line no-unused-var
 
     // Optional, supply if individual chapter titles are not inside the content element
     findChapterTitle(dom) {
-        return dom.querySelector("#chapter-heading");
+        return dom.querySelector("h1#chapter-heading");
     }
 
     // Optional, supply if cover image can usually be found on inital web page
     // Notes.
     //   1. If cover image is first image in content section, do not implement this function
     findCoverImageUrl(dom) {
-        return util.getFirstImgSrc(dom, ".summary_image");
+        return util.getFirstImgSrc(dom, "div.summary_image");
     }
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll(".post-content p")];
+        return [...dom.querySelectorAll("div.post-content_item div.summary-content"), dom.querySelector("div.summary__content")];
     }
 }
