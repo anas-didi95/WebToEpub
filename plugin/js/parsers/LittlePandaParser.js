@@ -167,11 +167,10 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
-    /*
     getInformationEpubItemChildNodes(dom) {
-        return [...dom.querySelectorAll("div.novel-details")];
+        const summary = dom.querySelector("section.story__summary");
+        return [...summary.querySelectorAll("p")];
     }
-    */
 
     // Optional, Any cleanup operations to perform on the nodes
     // returned by getInformationEpubItemChildNodes
