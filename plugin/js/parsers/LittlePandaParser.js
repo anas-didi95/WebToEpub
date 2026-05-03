@@ -24,6 +24,7 @@ class LittlePandaParser extends Parser { // eslint-disable-line no-unused-vars
         util.removeChildElementsMatchingSelector(element, "span.ts-honeypot");
         util.removeChildElementsMatchingSelector(element, "div.navigation-buttons");
         util.removeChildElementsMatchingSelector(element, "hr.wp-block-separator");
+        util.removeChildElementsMatchingSelector(element, "style");
         super.removeUnwantedElementsFromContentElement(element);
     }
 
