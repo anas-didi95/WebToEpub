@@ -5,46 +5,77 @@ parserFactory.register("dragontl.net", () => new DragonTLParser());
 class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
     constructor() {
         super();
+        //Optional Parameters:
+
+        /*
+        // Minimum delay (in ms) between page requests. Useful for 403 error prevention.
+        // If the sites this parser accesses throttles requests or uses cloudflare, it is recommended to set this.
+        this.minimumThrottle = 3000;
+        */
     }
 
     // returns promise with the URLs of the chapters to fetch
     // promise is used because may need to fetch the list of URLs from internet
-    async getChapterUrls(dom) {
-        const tocList = dom.querySelectorAll(".mbs_toc_list");
+    /*
+    async getChapterUrls(dom, chapterUrlsUI) {
+        // Most common implementation is to find element holding the hyperlinks to 
+        // the web pages holding the chapters.  Then call util.hyperlinksToChapterList()
+        // to convert the links into a list of URLs the parser will collect.
+        let menu = dom.querySelector("div.su-tabs-panes");
+        return util.hyperlinksToChapterList(menu);
 
-        if (tocList.length === 0) {
-            return [];
-        } else if (tocList.length === 1) {
-            return util.hyperlinksToChapterList(tocList[0]);
-        }
-        
-        return [...tocList]
-            .map(toc => util.hyperlinksToChapterList(toc, false, () => toc.previousSibling.textContent))
-            .reduce((prev, curr) => [...prev, ...curr], []);
+        // Almost as common, find links on page and convert.
+        return [...dom.querySelectorAll("li.wp-manga-chapter.free-chap a")]
+            .map(a => util.hyperLinkToChapter(a));
+
+        // Need to walk multiple ToC pages, page by page
+        return (await this.walkTocPages(dom, 
+            TemplateParser.chaptersFromDom, 
+            TemplateParser.nextTocPageUrl, 
+            chapterUrlsUI
+        ));
+
+        // Can get list of all ToC pages
+        let tocPage1chapters = TemplateParser.extractPartialChapterList(dom);
+        let urlsOfTocPages  = TemplateParser.getUrlsOfTocPages(dom);
+        return (await this.getChaptersFromAllTocPages(tocPage1chapters,
+            TemplateParser.extractPartialChapterList,
+            urlsOfTocPages,
+            chapterUrlsUI
+        ));
     }
+    */
 
     // returns the element holding the story content in a chapter
+    /*
     findContent(dom) {
-        return dom.querySelector(".fl-post-content");
+        // typical implementation is find node with all wanted content
+        // return is the element holding just the wanted content.
+        return dom.querySelector("article");
     }
+    */
 
     // title of the story  (not to be confused with title of each chapter)
+    /*
     extractTitleImpl(dom) {
+        // typical implementation is find node with the Title and return name from title
+        // NOTE. Can return Title as a string, or an  HTML element
         return dom.querySelector("h1");
     }
+    */
 
     // author of the story
     // Optional, if not provided, will default to "<unknown>"
+    /*
     extractAuthor(dom) {
-        const label = dom.querySelector(".mbs_story_summary > p:nth-child(3) > strong:nth-child(1)")?.textContent ?? "";
-        
-        const found = label.toLowerCase().startsWith("author:");
-        if (!found) {
-            return super.extractAuthor(dom);
-        }
-
-        return label.substring(label.indexOf(":") + 1).trim();
+        // typical implementation is find node with the author's name and return name from title
+        // Major points to note
+        //   1. Return the Author's name as a string, not a HTML element
+        //   2. If can't find Author, call the base implementation
+        let authorLabel = dom.querySelector(".meta span a");
+        return authorLabel?.textContent ?? super.extractAuthor(dom);
     }
+    */
 
     // language used
     // Optional, if not provided, will default to ISO code for English "en"
@@ -67,16 +98,12 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
 
     // Genre of the story
     // Optional, Genre for metadata, if not provided, will default to ""
+    /*
     extractSubject(dom) {
-        const label = dom.querySelector(".mbs_story_summary > p:nth-child(2) > strong:nth-child(1)")?.textContent ?? "";
-        
-        const found = label.toLowerCase().startsWith("genre:");
-        if (!found) {
-            return super.extractAuthor(dom);
-        }
-
-        return label.substring(label.indexOf(":") + 1).trim();
-    } 
+        let tags = [...dom.querySelectorAll("[property='genre']")];
+        return tags.map(e => e.textContent.trim()).join(", ");
+    }
+    */
 
     // Description of the story
     // Optional, Description for metadata, if not provided, will default to ""
@@ -95,20 +122,21 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
     */
 
     // Optional, supply if need to do custom cleanup of content
+    /*
     removeUnwantedElementsFromContentElement(element) {
-        util.removeChildElementsMatchingSelector(element, ".dtl-breadcrumbs");
-        util.removeChildElementsMatchingSelector(element, ".mbs_toc_link");
-        util.removeChildElementsMatchingSelector(element, ".mbs_prev");
-        util.removeChildElementsMatchingSelector(element, ".mbs_next");
-        util.removeChildElementsMatchingSelector(element, ".fl-post-content > div:last-child");
-        util.removeChildElementsMatchingSelector(element, ".fl-post-content > div:last-child");
+        util.removeChildElementsMatchingSelector(element, "button");
         super.removeUnwantedElementsFromContentElement(element);
     }
+    */
 
     // Optional, supply if individual chapter titles are not inside the content element
+    /*
     findChapterTitle(dom) {
-        return dom.querySelector(".mbs_posts_title");
+        // typical implementation is find node with the Title
+        // Return Title element, OR the title as a string
+        return dom.querySelector("h3.dashhead-title");
     }
+    */
 
     // Optional, if "next/previous chapter" are nested inside other elements,
     // this says how to find the highest parent element to remove
@@ -182,10 +210,11 @@ class DragonTLParser extends Parser { // eslint-disable-line no-unused-vars
 
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
+    /*
     getInformationEpubItemChildNodes(dom) {
-        const nodeList = dom.querySelector(".mbs_story_summary")?.childNodes ?? [];
-        return [...nodeList];
+        return [...dom.querySelectorAll("div.novel-details")];
     }
+    */
 
     // Optional, Any cleanup operations to perform on the nodes
     // returned by getInformationEpubItemChildNodes
