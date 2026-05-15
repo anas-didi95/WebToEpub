@@ -308,6 +308,16 @@ class Parser {
     }
 
     /**
+    * default implementation, 
+    * if not available, return ''
+    */
+    extractPublisher(dom) {
+        // try metadata extraction
+        let publisher = dom.querySelector("meta[property='og:site_name']");
+        return publisher?.content ?? "";
+    }
+
+    /**
     * default implementation, Derived classes will override
     */
     extractSeriesInfo(dom, metaInfo) {  // eslint-disable-line no-unused-vars
@@ -355,6 +365,12 @@ class Parser {
         }
         catch (err) {
             metaInfo.description = "";
+        }
+        try {
+            metaInfo.publisher = this.extractPublisher(dom);
+        }
+        catch (err) {
+            metaInfo.publisher = "";
         }
         this.extractSeriesInfo(dom, metaInfo);
         return metaInfo;
