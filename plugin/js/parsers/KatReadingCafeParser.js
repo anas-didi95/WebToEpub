@@ -5,46 +5,25 @@ parserFactory.register("katreadingcafe.com", () => new KatReadingCafeParser());
 class KatReadingCafeParser extends Parser { // eslint-disable-line no-unused-vars
     constructor() {
         super();
-        //Optional Parameters:
-
-        /*
-        // Minimum delay (in ms) between page requests. Useful for 403 error prevention.
-        // If the sites this parser accesses throttles requests or uses cloudflare, it is recommended to set this.
-        this.minimumThrottle = 3000;
-        */
     }
 
     // returns promise with the URLs of the chapters to fetch
     // promise is used because may need to fetch the list of URLs from internet
-    /*
-    async getChapterUrls(dom, chapterUrlsUI) {
-        // Most common implementation is to find element holding the hyperlinks to 
-        // the web pages holding the chapters.  Then call util.hyperlinksToChapterList()
-        // to convert the links into a list of URLs the parser will collect.
-        let menu = dom.querySelector("div.su-tabs-panes");
-        return util.hyperlinksToChapterList(menu);
+    async getChapterUrls(dom) {
+        const menuList = [...dom.querySelectorAll("div.eplister ul li a")];
 
-        // Almost as common, find links on page and convert.
-        return [...dom.querySelectorAll("li.wp-manga-chapter.free-chap a")]
-            .map(a => util.hyperLinkToChapter(a));
+        const chapterList = menuList.map(o => {
+            var ch = o.querySelector("div.epl-num").innerText;
+            var title = o.querySelector("div.epl-title").innerText;
+            
+            return {
+                sourceUrl: o.href,
+                title: `${ch ? ch + ": " : ""}${title}`
+            };
+        });
 
-        // Need to walk multiple ToC pages, page by page
-        return (await this.walkTocPages(dom, 
-            TemplateParser.chaptersFromDom, 
-            TemplateParser.nextTocPageUrl, 
-            chapterUrlsUI
-        ));
-
-        // Can get list of all ToC pages
-        let tocPage1chapters = TemplateParser.extractPartialChapterList(dom);
-        let urlsOfTocPages  = TemplateParser.getUrlsOfTocPages(dom);
-        return (await this.getChaptersFromAllTocPages(tocPage1chapters,
-            TemplateParser.extractPartialChapterList,
-            urlsOfTocPages,
-            chapterUrlsUI
-        ));
+        return chapterList.reverse();
     }
-    */
 
     // returns the element holding the story content in a chapter
     /*
