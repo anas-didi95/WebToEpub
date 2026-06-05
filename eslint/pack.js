@@ -144,10 +144,12 @@ var getLocaleFilesNames = function() {
 var addPopupHtmlToZip = function(zip) {
     return readFilePromise("../plugin/popup.html")
         .then(function(data) {
+            // Remove lines containing /experimental/ from popup.html
+            // Handle both \r\n (Windows) and \n (Unix) line endings
             let htmlAsString = data.toString()
-                .split("\r")
+                .split(/\r?\n/)
                 .filter(s => !s.includes("/experimental/"))
-                .join("\r");
+                .join("\n");
             zip.add("popup.html", new zipjs.TextReader(htmlAsString));
         });
 };
