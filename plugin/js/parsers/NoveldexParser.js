@@ -1,6 +1,7 @@
 "use strict";
 
 parserFactory.register("noveldex.io", () => new NoveldexParser());
+HttpClient.blockedSites.add("noveldex.io");
 
 /**
  * Parser for the http://noveldex.io/ site.
@@ -8,6 +9,10 @@ parserFactory.register("noveldex.io", () => new NoveldexParser());
 class NoveldexParser extends Parser { // eslint-disable-line no-unused-vars
     constructor() {
         super();
+    }
+
+    disabled() {
+        return UIText.Warning.parserDisabledNotification;
     }
 
     /*
@@ -99,13 +104,13 @@ class NoveldexParser extends Parser { // eslint-disable-line no-unused-vars
         const unescaped = JSON.parse(`["${foundContent}"]`)[0];
 
         // Parse partially unescaped HTML.
-        const elementified = dom.createElement("div");
-        elementified.innerHTML = unescaped;
+        const sanitized = util.sanitize("<div>"+unescaped+"</div>");
+        const elementified = sanitized.querySelector("div");
 
         // Unescape HTML-escaped tags, and remove nested <p> tags.
         Array.from(elementified.querySelectorAll("p"))
             .filter(p => p.innerText.startsWith("<p>"))
-            .forEach(p => p.outerHTML = p.textContent);
+            .forEach(p => p.textContent = p.textContent.substring(3, p.textContent.length-5));
 
         return elementified;
     }
