@@ -147,7 +147,8 @@ var addPopupHtmlToZip = function(zip) {
             // Remove lines containing /experimental/ from popup.html
             // Handle both \r\n (Windows) and \n (Unix) line endings
             let htmlAsString = data.toString()
-                .split(/\r?\n/)
+                .replace(/\r\n?/g, "\n")
+                .split("\n")
                 .filter(s => !s.includes("/experimental/"))
                 .join("\n");
             zip.add("popup.html", new zipjs.TextReader(htmlAsString));

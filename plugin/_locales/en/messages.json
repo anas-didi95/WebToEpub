@@ -467,6 +467,10 @@
 		"message": "Skip chapters that return HTTP 404 error",
 		"description": "Label in front of checkbox for skipping chapters that can't be fetched"
 	},
+	"__MSG_label_No_Content_To_Error_403_Page__": {
+		"message": "Treat 'no content found error' as 'HTTP 403 error'.",
+		"description": "Label in front of checkbox for treating 'no content found' error as 'HTTP 403 error'"
+	},
 	"__MSG_label_Stylesheet__": {
 		"message": "Stylesheet:",
 		"description": "Label in front of edit field for setting the stylesheet (in Advanced settings)."
@@ -738,6 +742,10 @@
 		"message": "No images found",
 		"description": "Text put in images table when no images are found."
 	},
+	"errorMobileModeDetected": {
+		"message": "You use WebToEpub in the Mobile view please change the tab to the Desktop version.\nIn Firefox for Android ⋮-> Desktop site -> On\n\nThe website from which you start WebToEpub also needs to be in the Desktop view.",
+		"description": "Warning message when the user is in Mobile mode."
+	},
 	"noParserFound": {
 		"message": "No parser found for this URL.  Default parser will be used.  You will need to specify how to obtain content for each chapter.",
 		"description": "Warning message when can't figure out how to extract info from web page."
@@ -759,7 +767,7 @@
 		"description": "Internal message for developer."
 	},
 	"warning403ErrorResponse": {
-		"message": "WARNING: Site '$host$' has sent an Access Denied (403) error.\nYou may need to logon to site, or browse site normally\nuntil you get a Cloudflare \"Are you a human\" page or satisfy some other CAPTCHA\nbefore WebToEpub can continue.\nThis happens if you are downloading to fast try to increase 'Advanced Options -> Delay per chapter in ms'\n",
+		"message": "WARNING: Site '$host$' has sent an Access Denied (403) error.\nYou may need to logon to site, or browse site normally\nuntil you get a Cloudflare \"Are you a human\" page or satisfy some other CAPTCHA\nbefore WebToEpub can continue.\nThis happens if you are downloading too fast, try to increase 'Advanced Options -> Delay per chapter in ms'\n",
 		"description": "Warning message for user when site sends a 403 response.",
 		"placeholders": {
 			"host": {

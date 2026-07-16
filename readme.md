@@ -822,6 +822,12 @@ Don't forget to give the project a star! Thanks again!
     <li>ltmerletti</li>
     <li>thanhlouis</li>
     <li>fnx4</li>
+    <li>Fox6935</li>
+    <li>ARYAN-9099</li>
+    <li>possibletoactual (Royal Road redesign fix)</li>
+    <li>kuwoyuki</li>
+    <li>bendur</li>
+    <li>Bartuzen</li>
   </ul>
 </details>
 
