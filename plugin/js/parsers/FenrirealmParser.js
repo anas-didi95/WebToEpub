@@ -5,6 +5,7 @@ parserFactory.register("fenrirealm.com", () => new FenrirealmParser());
 class FenrirealmParser extends Parser {
     constructor() {
         super();
+        this.minimumThrottle = 3000;
     }
 
     async getChapterUrls(dom) {
@@ -39,6 +40,12 @@ class FenrirealmParser extends Parser {
         return (parts.length >= 2) && (parts[0].trim() === parts[1].trim())
             ? parts.slice(1).join(":")
             : titleText;
+    }
+
+    removeUnwantedElementsFromContentElement(element) {
+        util.removeChildElementsMatchingSelector(element, "[style*='width:1px']");
+        util.removeChildElementsMatchingSelector(element, ".reader-attribution");
+        super.removeUnwantedElementsFromContentElement(element);
     }
 
     findCoverImageUrl(dom) {

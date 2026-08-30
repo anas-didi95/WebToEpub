@@ -43,6 +43,10 @@
 		"message": "Add novels to Library",
 		"description": "Label on button to Add novels to Library in Library"
 	},
+	"__MSG_button_Lib_Template_Add_List_To_Library_Paused__": {
+		"message": "Add novels to Library paused",
+		"description": "Label on button to Add novels to Library in Library"
+	},
 	"__MSG_button_Lib_Template_Update_All__": {
 		"message": "Update all",
 		"description": "Label on button to Update all Epubs"
@@ -71,12 +75,16 @@
 		"message": "Edit Metadata",
 		"description": "Label on button to show edit options for metadata"
 	},
+	"__MSG_button_Lib_Template_Open_URL__": {
+		"message": "Open URL",
+		"description": "Label on button to open URL from Library book"
+	},
 	"__MSG_label_Lib_Template_Library_uses__": {
 		"message": "Library uses: ",
 		"description": "Label in front of the Bytes used in local Storage"
 	},
 	"__MSG_label_Lib_Template_New_Chapter__": {
-		"message": " new chapter",
+		"message": " new",
 		"description": "Label of x new chapter"
 	},
 	"__MSG_label_Lib_Template_Story_URL__": {
@@ -138,6 +146,10 @@
 	"__MSG_button_error_Open_URL__": {
 		"message": "Open URL for Captcha",
 		"description": "Label on 'Open URL for Captcha' button when show error HTTP 403"
+	},
+	"__MSG_button_error_Copy_URL__": {
+		"message": "Copy URL for Captcha",
+		"description": "Label on 'Copy URL for Captcha' button when show error HTTP 403"
 	},
 	"__MSG_button_error_Block_URL__": {
 		"message": "Block Website for future requests",
@@ -254,6 +266,10 @@
 	"__MSG_label_Compress_Images__": {
 		"message": "Compress Images",
 		"description": "Label for checkbox and value to compress images to a certain size"
+	},
+	"__MSG_label_Compress_Images_Animated__": {
+		"message": "Compress Animated Images to single frame (GIF, APNG, WebP)",
+		"description": "Label for animated compression checkbox"
 	},
 	"__MSG_label_Compress_Images_JPG_Cover__": {
 		"message": "Restrict Cover Image to JPEG",
@@ -375,6 +391,10 @@
 		"message": "Publisher",
 		"description": "Label for Epub publisher"
 	},
+	"__MSG_label_Metadata_date_published__": {
+		"message": "Published",
+		"description": "Label for the original publication date"
+	},
 	"__MSG_label_Custom_Filename__": {
 		"message": "Custom Filename",
 		"description": "Custom Filename input"
@@ -490,6 +510,10 @@
 	"__MSG_label_Use_Full_Title_As_File_Name__": {
 		"message": "Use full title as file name",
 		"description": "Label in front of checkbox to choose if Epub's filename will be truncated or not."
+	},
+	"__MSG_label_Remove_Illegal_Character_From_Filename_On_Download__": {
+		"message": "Remove illegal characters from filename on download",
+		"description": "Label in front of checkbox to choose if Epub's filename will have it's illegal character removed or not."
 	},
 	"__MSG_label_Use_SVG_for_Images__": {
 		"message": "Use <svg> for images",
