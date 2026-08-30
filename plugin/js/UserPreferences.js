@@ -112,12 +112,14 @@ class UserPreferences { // eslint-disable-line no-unused-vars
         this.overrideMinimumDelay = this.addPreference("overrideMinimumDelay", "overrideMinimumDelayCheckbox", false);
         this.skipImages = this.addPreference("skipImages", "skipImagesCheckbox", false);
         this.compressImages = this.addPreference("compressImages", "compressImagesCheckbox", false);
+        this.compressImagesAnimated = this.addPreference("compressImagesAnimated", "compressImagesAnimatedCheckbox", true);
         this.compressImagesJpgCover = this.addPreference("compressImagesJpgCover", "compressImagesJpgCoverCheckbox", false);
         this.compressImagesType = this.addPreference("compressImagesType", "compressImagesType", "jpg");
         this.compressImagesMaxResolution = this.addPreference("compressImagesMaxResolution", "compressImagesMaxResolutionTag", "1080");
         this.overwriteExistingEpub = this.addPreference("overwriteExistingEpub", "overwriteEpubWhenDuplicateFilenameCheckbox", false);
         this.themeColor = this.addPreference("themeColor", "themeColorTag", "");
         this.useFullTitle = this.addPreference("useFullTitle", "useFullTitleAsFileNameCheckbox", false);
+        this.removeIllegalCharacterFromFilenameOnDownload = this.addPreference("removeIllegalCharacterFromFilenameOnDownload", "removeIllegalCharacterFromFilenameOnDownloadCheckbox", false);
         this.addInformationPage = this.addPreference("addInformationPage", "addInformationPageToEpubCheckbox", true);
         this.lesstags = this.addPreference("lesstags", "lesstagsCheckbox", true);
         this.autosearchmetadata = this.addPreference("autosearchmetadata", "autosearchmetadataCheckbox", false);
@@ -263,9 +265,9 @@ class UserPreferences { // eslint-disable-line no-unused-vars
     loadReadingListFromJson(json) {
         let val = json[ReadingList.storageName];
         if (val !== undefined) {
-            let serialized = JSON.stringify(val);
-            this.readingList = ReadingList.fromJson(serialized);
-            window.localStorage.setItem(ReadingList.storageName, serialized);
+            for (let i = 0; i < val.epubs.length; i++) {
+                this.readingList.setEpub(val.epubs[i].toc, val.epubs[i].lastUrl);
+            }
         }
     }
 
