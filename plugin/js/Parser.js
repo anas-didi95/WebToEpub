@@ -208,6 +208,9 @@ class Parser {
     }
 
     populateUI(dom) {
+        let versionElement = document.getElementById("spanExtensionVersion");
+        versionElement.textContent = `WebToEpub v${util.extensionVersion()}`;
+
         CoverImageUI.showCoverImageUrlInput(true);
         let coverUrl = this.findCoverImageUrl(dom);
         CoverImageUI.setCoverImageUrl(coverUrl);
@@ -466,7 +469,11 @@ class Parser {
         let bold = document.createElement("b");
         bold.textContent = UIText.Default.tableOfContentsUrl;
         urlElement.appendChild(bold);
-        urlElement.appendChild(document.createTextNode(this.state.chapterListUrl));
+        let link = document.createElement("a");
+        link.classList.add("webToEpub-table-of-content-url");
+        link.href = this.state.chapterListUrl;
+        link.textContent = this.state.chapterListUrl;
+        urlElement.appendChild(link);
         div.appendChild(urlElement);
         let infoDiv = document.createElement("div");
         this.populateInfoDiv(infoDiv, dom);    
@@ -599,7 +606,7 @@ class Parser {
                 await Promise.all(group.map(async (webPage) => this.fetchWebPageContent(webPage)));
                 index += group.length;
                 group = this.groupPagesToFetch(pagesToFetch, index);
-                if (util.sleepController.signal.aborted) {
+                if (util.getSleepController().signal.aborted) {
                     break;
                 }
             }
@@ -632,7 +639,7 @@ class Parser {
             let content = pageParser.findContent(webPage.rawDom);
             if (content == null) {
                 if (this.userPreferences.noContentToError403.value) {
-                    let errorMsg = UIText.Warning.warning403ErrorResponse(new URL(webPage.sourceUrl).hostname);
+                    let errorMsg = UIText.Warning.warningNoContentTo403ErrorResponse(new URL(webPage.sourceUrl).hostname);
                     throw new Error(errorMsg);
                 }
                 else {
@@ -701,7 +708,7 @@ class Parser {
     fixupHyperlinksInEpubItems(epubItems) {
         let targets = this.sourceUrlToEpubItemUrl(epubItems);
         for (let item of epubItems) {
-            for (let link of item.getHyperlinks().filter(this.isUnresolvedHyperlink)) {
+            for (let link of item.getHyperlinks().filter(this.isUnresolvedHyperlink).filter(link => !link.classList.contains("webToEpub-table-of-content-url"))) {
                 if (!this.hyperlinkToEpubItemUrl(link, targets)) {
                     this.makeHyperlinkAbsolute(link);
                 }
@@ -780,7 +787,7 @@ class Parser {
         };
     }
 
-    static findConstrutedContent(dom) {
+    static findConstructedContent(dom) {
         return dom.querySelector("div." + Parser.WEB_TO_EPUB_CLASS_NAME);
     }
 
