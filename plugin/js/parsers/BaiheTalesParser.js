@@ -68,7 +68,7 @@ class BaiheTalesParser extends Parser { // eslint-disable-line no-unused-vars
     // Optional, Return elements from page
     // that are to be shown on epub's "information" page
     getInformationEpubItemChildNodes(dom) {
-        const contents = Array.from(dom.querySelectorAll("div.entry-content p.wp-block-paragraph"));
+        const contents = Array.from(dom.querySelectorAll("div.entry-content > p.wp-block-paragraph"));
         return contents.slice(0, contents.length - 1);
     }
 }
