@@ -116,13 +116,13 @@ class CurspeParser extends Parser {
         }
 
         const withoutMeta = this.removeChapterListMetadata(clean);
-        const prefix = new RegExp(`^Chapter\s+${chapterNumber}\s*[-–—:]\s*(.+)$`, "i");
+        const prefix = new RegExp(`^Chapter\\s+${chapterNumber}\\s*[-–—:]\\s*(.+)$`, "i");
         const match = withoutMeta.match(prefix);
         if (match != null) {
             return match[1].trim();
         }
 
-        if (new RegExp(`^Chapter\s+${chapterNumber}$`, "i").test(withoutMeta)) {
+        if (new RegExp(`^Chapter\\s+${chapterNumber}$`, "i").test(withoutMeta)) {
             return "";
         }
 
@@ -526,7 +526,7 @@ class CurspeParser extends Parser {
             .replace(/^\^/, "")
             .replace(/\$$/, "");
         const labelOnly = new RegExp(`^${labelSource}$`, "i");
-        const inline = new RegExp(`^${labelSource}\s*[:：]?\s*(.+)$`, "i");
+        const inline = new RegExp(`^${labelSource}\\s*[:：]?\\s*(.+)$`, "i");
 
         for (const element of dom.querySelectorAll("li, p, div, dt, dd, span, strong, b")) {
             const text = element.textContent.replace(/\s+/g, " ").trim();
