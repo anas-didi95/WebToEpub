@@ -30,6 +30,14 @@
     border-bottom: 1px #CCC solid;
 }
 
+#extensionVersionSection {
+    text-align: center;
+}
+
+#spanWebToEpubVersion {
+    display: inline-block;
+    text-align: center;
+}
 
 progress {
     width: 56%;
@@ -223,7 +231,7 @@ button {
     max-height: 142px;
     max-width: 106.5px;
     position: absolute;
-    top: 14px;
+    top: 41px;
     right: 7%;
 }
 
